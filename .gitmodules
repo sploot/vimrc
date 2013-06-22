@@ -10,9 +10,6 @@
 [submodule "vim/bundle/manpageview"]
 	path = vim/bundle/manpageview
 	url = git://github.com/dkasak/manpageview.git
-[submodule "neocomplcache"]
-	path = neocomplcache
-	url = git://github.com/Shougo/neocomplcache.vim.git
 [submodule "vim/bundle/nerdtree"]
 	path = vim/bundle/nerdtree
 	url = git://github.com/scrooloose/nerdtree.git
