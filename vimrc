@@ -56,11 +56,14 @@ nnoremap <silent> <F8> :TlistToggle<CR>
 nnoremap <silent> <F3> :NERDTreeToggle<CR> 
 
 " Syntastic
+let g:syntastic_check_on_open = 1
+let g:syntastic_tex_checkers = ['lacheck']
 let g:syntastic_enable_signs = 1
 let g:syntastic_error_symbol         = '✗'
 let g:syntastic_style_error_symbol   = '✗'
 let g:syntastic_warning_symbol       = '⚠'
 let g:syntastic_style_warning_symbol = '⚠'
+"let g:syntastic_shellslash = 0
 
 let c_no_curly_error   = 1
 let g:localrc_filename = '.lvimrc'
@@ -92,6 +95,12 @@ autocmd InsertEnter * set cursorline
 let NERDTreeIgnore = ['\.pyc$', '\.pyo$', '\.so$', '\.o$', '\.la$', '\.a$', '\.class$', '\~$', '\.beam$', '^Mnesia.', 'deps/', '\.hi$', 'vendor/']
 
 let g:neocomplcache_enable_at_startup = 1
+inoremap <expr><C-g> neocomplcache#undo_completion()
+inoremap <expr><C-l> neocomplcache#complete_common_string()
+let g:neocomplcache_enable_underbar_completion = 1
+
+imap  <silent><expr><TAB>  
+         \ neocomplcache#start_manual_complete() 
 
 let g:Tlist_Use_Right_Window = 1
 
@@ -114,6 +123,12 @@ endif
 
 "colors zenburn
 colors molokai
+
+hi IndentGuidesOdd ctermbg=black
+hi IndentGuidesEven ctermbg=darkgrey
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
+
 set cursorline
 set clipboard=unnamed
 set showmatch
@@ -240,7 +255,10 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 "autocmd MyAutoCmd BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc
 "      \ so $MYVIMRC | call Pl#Load() | if has('gui_running') | so $MYGVIMRC | endif
 
+
+""""""""""""""""""""""
 "  Unite settings
+""""""""""""""""""""""
 nnoremap <C-p> :Unite file_rec/async<cr>
 
 "use fuzzy matcher
@@ -333,6 +351,7 @@ function! s:unite_settings()
   imap <buffer> <ESC> <Plug>(unite_exit)
   " imap <buffer> <c-j> <Plug>(unite_select_next_line)
   imap <buffer> <c-j> <Plug>(unite_insert_leave)
+  imap <buffer> <CR> <Plug>(unite_insert_leave)
   nmap <buffer> <c-j> <Plug>(unite_loop_cursor_down)
   nmap <buffer> <c-k> <Plug>(unite_loop_cursor_up)
   imap <buffer> <c-a> <Plug>(unite_choose_action)
