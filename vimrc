@@ -222,19 +222,183 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 "let g:UltiSnipsJumpForwardTrigger="<C-l>"
 "
 
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-let g:ctrlp_by_filename = 0
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_root_markers = ['.ctrlp']
-let g:ctrlp_open_new_file = 't'
-let g:ctrlp_open_multiple_files = 't'
-let g:ctrlp_prompt_mappings = {
-   \ 'AcceptSelection("e")': ['<c-t>'],
-   \ 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>']
-   \ }
-let g:ctrlp_custom_ignore = {
-   \ 'file': '\v\.(log)$'
-   \ }
+"set runtimepath^=~/.vim/bundle/ctrlp.vim
+"let g:ctrlp_by_filename = 0
+"let g:ctrlp_working_path_mode = 'ra'
+"let g:ctrlp_root_markers = ['.ctrlp']
+"let g:ctrlp_open_new_file = 't'
+"let g:ctrlp_open_multiple_files = 't'
+"let g:ctrlp_prompt_mappings = {
+"   \ 'AcceptSelection("e")': ['<c-t>'],
+"   \ 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>']
+"   \ }
+"let g:ctrlp_custom_ignore = {
+"   \ 'file': '\v\.(log)$'
+"   \ }
+
+" Reload vimrc when edited, also reload the powerline color
+"autocmd MyAutoCmd BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc
+"      \ so $MYVIMRC | call Pl#Load() | if has('gui_running') | so $MYGVIMRC | endif
+
+"  Unite settings
+nnoremap <C-p> :Unite file_rec/async<cr>
+
+"use fuzzy matcher
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+
+" open files in new tab
+call unite#custom#default_action('file', 'tabopen')
+
+"use rank sorter
+call unite#filters#sorter_default#use(['sorter_rank'])
+
+" custom ignores
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+   \ 'ignore_pattern', join([
+   \ '\.git/',
+   \ 'git5/.*/review/',
+   \ 'google/obj',
+   \ ], '\|'))
+
+nnoremap [unite] <Nop>
+nmap <space> [unite]
+
+" general fuzzy search
+nnoremap <silent> [unite]<space> :<C-u>Unite
+   \ -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
+
+" quick registers
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+
+"quick buffer and mru
+nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers buffer file_mru<CR>
+
+"quick yank history
+nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
+
+"quick outline
+"nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
+
+
+" Quick sessions (projects)
+"nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session<CR>
+
+" Quick sources
+nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=sources source<CR>
+
+" Quick snippet
+nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=snippets snippet<CR>
+
+" Quickly switch lcd
+nnoremap <silent> [unite]d
+      \ :<C-u>Unite -buffer-name=change-cwd -default-action=lcd directory_mru<CR>
+
+" Quick file search
+nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async file/new<CR>
+
+" Quick grep from cwd
+nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
+
+" Quick help
+nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
+
+" Quick line using the word under cursor
+call unite#custom#profile('source/line', 'context', {'start_insert' : 0})
+nnoremap <silent> [unite]l :<C-u>UniteWithCursorWord -buffer-name=search_file line<CR>
+
+" Quick MRU search
+nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
+
+" Quick find
+nnoremap <silent> [unite]n :<C-u>Unite -buffer-name=find find:.<CR>
+
+" Quick commands
+nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
+
+" Quick bookmarks
+nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
+
+" Fuzzy search from current buffer
+" nnoremap <silent> [unite]b :<C-u>UniteWithBufferDir
+      " \ -buffer-name=files -prompt=%\  buffer file_mru bookmark file<CR>
+
+" Quick commands
+"nnoremap <silent> [unite]; :<C-u>Unite -buffer-name=history history/command command<CR>
+
+" Custom Unite settings
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+
+  nmap <buffer> <ESC> <Plug>(unite_exit)
+  imap <buffer> <ESC> <Plug>(unite_exit)
+  " imap <buffer> <c-j> <Plug>(unite_select_next_line)
+  imap <buffer> <c-j> <Plug>(unite_insert_leave)
+  nmap <buffer> <c-j> <Plug>(unite_loop_cursor_down)
+  nmap <buffer> <c-k> <Plug>(unite_loop_cursor_up)
+  imap <buffer> <c-a> <Plug>(unite_choose_action)
+  imap <buffer> <Tab> <Plug>(unite_exit_insert)
+  imap <buffer> jj <Plug>(unite_insert_leave)
+  imap <buffer> <C-w> <Plug>(unite_delete_backward_word)
+  imap <buffer> <C-u> <Plug>(unite_delete_backward_path)
+  imap <buffer> '     <Plug>(unite_quick_match_default_action)
+  nmap <buffer> '     <Plug>(unite_quick_match_default_action)
+  nmap <buffer> <C-r> <Plug>(unite_redraw)
+  imap <buffer> <C-r> <Plug>(unite_redraw)
+  inoremap <silent><buffer><expr> <C-s> unite#do_action('split')
+  nnoremap <silent><buffer><expr> <C-s> unite#do_action('split')
+  inoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+  nnoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+
+  let unite = unite#get_current_unite()
+  if unite.buffer_name =~# '^search'
+    nnoremap <silent><buffer><expr> r     unite#do_action('replace')
+  else
+    nnoremap <silent><buffer><expr> r     unite#do_action('rename')
+  endif
+
+  nnoremap <silent><buffer><expr> cd     unite#do_action('lcd')
+
+  " Using Ctrl-\ to trigger outline, so close it using the same keystroke
+  if unite.buffer_name =~# '^outline'
+    imap <buffer> <C-\> <Plug>(unite_exit)
+  endif
+
+  " Using Ctrl-/ to trigger line, close it using same keystroke
+  if unite.buffer_name =~# '^search_file'
+    imap <buffer> <C-_> <Plug>(unite_exit)
+  endif
+endfunction
+
+" Start in insert mode
+let g:unite_enable_start_insert = 1
+
+let g:unite_winheight = 10
+let g:unite_split_rule = 'botright'
+
+" Enable short source name in window
+ let g:unite_enable_short_source_names = 1
+
+" Enable history yank source
+let g:unite_source_history_yank_enable = 1
+
+" Open in bottom right
+let g:unite_split_rule = "botright"
+
+" Shorten the default update date of 500ms
+let g:unite_update_time = 200
+
+let g:unite_source_file_mru_limit = 1000
+let g:unite_cursor_line_highlight = 'TabLineSel'
+" let g:unite_abbr_highlight = 'TabLine'
+
+let g:unite_source_file_mru_filename_format = ':~:.'
+let g:unite_source_file_mru_time_format = ''
+
+
+" tabman
+let g:tabman_toggle = '<leader>mt'
+let g:tabman_focus = '<leader>mf'
+let g:tabman_specials = 0
 
 function! ToggleHighlighting(group,regex) " {{{
    let entries = filter(getmatches(), 'v:val.group == "' . a:group . '"')

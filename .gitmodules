@@ -70,3 +70,21 @@
 [submodule "vim/bundle/ctrlp"]
 	path = vim/bundle/ctrlp
 	url = git://github.com/kien/ctrlp.vim.git
+[submodule "vim/bundle/tagbar"]
+	path = vim/bundle/tagbar
+	url = git://github.com/majutsushi/tagbar.git
+[submodule "vim/bundle/AutoTag"]
+	path = vim/bundle/AutoTag
+	url = git://github.com/vim-scripts/AutoTag.git
+[submodule "vim/bundle/ultisnips"]
+	path = vim/bundle/ultisnips
+	url = git://github.com/SirVer/ultisnips.git
+[submodule "vim/bundle/vimproc"]
+	path = vim/bundle/vimproc
+	url = git://github.com/Shougo/vimproc.vim.git
+[submodule "vim/bundle/unite-help"]
+	path = vim/bundle/unite-help
+	url = git://github.com/Shougo/unite-help.git
+[submodule "vim/bundle/tabman"]
+	path = vim/bundle/tabman
+	url = git://github.com/kien/tabman.vim.git
