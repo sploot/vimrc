@@ -64,3 +64,6 @@
 [submodule "vim/bundle/robokai"]
 	path = vim/bundle/robokai
 	url = git://github.com/vim-scripts/robokai.git
+[submodule "vim/bundle/neocomplcache"]
+	path = vim/bundle/neocomplcache
+	url = git://github.com/Shougo/neocomplcache.vim.git
