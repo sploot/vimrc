@@ -35,7 +35,7 @@ filetype plugin on
 filetype plugin indent on
 
 
-autocmd! bufwritepost .vimrc source ~/.vimrc
+autocmd! bufwritepost .vimrc source ~/.vimrc | call Pl#Load()
 
 
 " Tabs
@@ -69,7 +69,9 @@ let c_no_curly_error   = 1
 let g:localrc_filename = '.lvimrc'
 
 " Powerline
-let g:Powerline_symbols = 'fancy'
+let g:powerline_colorscheme = 'default'
+let g:powerline_symbols = 'unicode'
+let g:powerline_stl_path_style = 'relative'
 set laststatus=2
 
 " IMPORTANT: grep will sometimes skip displaying the file name if you
@@ -99,8 +101,7 @@ inoremap <expr><C-g> neocomplcache#undo_completion()
 inoremap <expr><C-l> neocomplcache#complete_common_string()
 let g:neocomplcache_enable_underbar_completion = 1
 
-imap  <silent><expr><TAB>  
-         \ neocomplcache#start_manual_complete() 
+imap  <silent><expr><C-space> neocomplcache#start_manual_complete() 
 
 let g:Tlist_Use_Right_Window = 1
 
@@ -161,11 +162,11 @@ set tm=500
 "}
 
 " status line {
-set laststatus=2
-set statusline=\ %{HasPaste()}%<%-15.25(%f%)%m%r%h\ %w\ \
-set statusline+=\ \ \ [%{&ff}/%Y]
-set statusline+=\ \ \ %<%20.30(%{hostname()}:%{CurDir()}%)\
-set statusline+=%=%-10.(%l,%c%V%)\ %p%%/%L
+"set laststatus=2
+"set statusline=\ %{HasPaste()}%<%-15.25(%f%)%m%r%h\ %w\ \
+"set statusline+=\ \ \ [%{&ff}/%Y]
+"set statusline+=\ \ \ %<%20.30(%{hostname()}:%{CurDir()}%)\
+"set statusline+=%=%-10.(%l,%c%V%)\ %p%%/%L
 
 function! CurDir()
    let curdir = substitute(getcwd(), $HOME, "~", "")
@@ -206,11 +207,6 @@ vnoremap > >gv
 
 cmap cd. lcd %:p:h
 
-" LaTeX files
-au BufNewFile,BufRead *.tex setlocal ft=tex
-au FileType tex setlocal spell spelllang=en_us
-nmap <leader>ll :!vtex.sh '%:p'<CR><CR>
-nmap <leader>lo :!vtex.sh -o '%:p'<CR><CR>
 if has("gui_running")
    set mousemodel=popup
 endif
@@ -435,3 +431,17 @@ endfunction! "}}}
 function! ToggleHighlightTabs() "{{{
    call ToggleHighlighting('Tabs', '\v\t+')
 endfunction! "}}}
+
+
+" UltiSnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+
+" LaTeX files
+au BufNewFile,BufRead *.tex setlocal ft=tex
+au FileType tex setlocal spell spelllang=en_us
+au FileType tex :NeoComplCacheLock
+nmap <leader>ll :!vtex.sh '%:p'<CR><CR>
+nmap <leader>lo :!vtex.sh -o '%:p'<CR><CR>
+
