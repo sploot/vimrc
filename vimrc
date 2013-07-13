@@ -28,6 +28,7 @@ set textwidth=78
 set cc=+1
 
 call pathogen#infect()
+call pathogen#helptags()
 
 filetype on
 filetype indent on
@@ -79,29 +80,29 @@ set laststatus=2
 " program to always generate a file-name.
 set grepprg=grep\ -nH\ $*
 
-if has("autocmd")
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-    autocmd FileType c set omnifunc=ccomplete#Complete
-    autocmd FileType java set omnifunc=javacomplete#Complete
-    autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-    autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-endif
+"if has("autocmd")
+"    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+""    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+"    autocmd FileType c set omnifunc=ccomplete#Complete
+"    autocmd FileType java set omnifunc=javacomplete#Complete
+"    autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+"    autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+"endif
 
 autocmd InsertLeave * set nocursorline
 autocmd InsertEnter * set cursorline
 
 let NERDTreeIgnore = ['\.pyc$', '\.pyo$', '\.so$', '\.o$', '\.la$', '\.a$', '\.class$', '\~$', '\.beam$', '^Mnesia.', 'deps/', '\.hi$', 'vendor/']
 
-let g:neocomplcache_enable_at_startup = 1
-inoremap <expr><C-g> neocomplcache#undo_completion()
-inoremap <expr><C-l> neocomplcache#complete_common_string()
-let g:neocomplcache_enable_underbar_completion = 1
+"let g:neocomplcache_enable_at_startup = 1
+"inoremap <expr><C-g> neocomplcache#undo_completion()
+"inoremap <expr><C-l> neocomplcache#complete_common_string()
+"let g:neocomplcache_enable_underbar_completion = 1
 
-imap  <silent><expr><C-space> neocomplcache#start_manual_complete() 
+"imap  <silent><expr><C-space> neocomplcache#start_manual_complete() 
 
 let g:Tlist_Use_Right_Window = 1
 
@@ -112,6 +113,7 @@ set fillchars+=vert:\
 "GitGutter
 let g:gitgutter_eager = 0
 au VimEnter * GitGutterEnable
+au VimEnter * GitGutterLineHighlightsEnable
 
 
 
@@ -215,6 +217,7 @@ endif
 let g:pymode_rope_vim_completion=0
 "jedi-vim
 let g:jedi#popup_select_first = 0
+let g:jedi#auto_initialization = 1
 
 "Startify
 let g:startify_skiplist = [
@@ -225,6 +228,8 @@ let g:startify_skiplist = [
              \ ]
 let g:startify_show_sessions = 1
 let g:startify_show_files = 1
+let g:startify_bookmarks = [ '~/.vimrc' ]
+"let g:startify_custom_indices = [ 'a', 's', 'd', 'f', 'j', 'k', 'l', ';']
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -445,3 +450,15 @@ au FileType tex :NeoComplCacheLock
 nmap <leader>ll :!vtex.sh '%:p'<CR><CR>
 nmap <leader>lo :!vtex.sh -o '%:p'<CR><CR>
 
+
+let g:instant_markdown_slow = 1
+
+augroup MUTT
+   au BufRead ~/.mutt/temp/mutt* set spell "
+   au BufRead ~/.mutt/temp/mutt* nmap <F1> gqap
+   au BufRead ~/.mutt/temp/mutt* nmap <F2> gqqj
+   au BufRead ~/.mutt/temp/mutt* nmap <F3> kgqj
+   au BufRead ~/.mutt/temp/mutt* map! <F1> <ESC>gqapi
+   au BufRead ~/.mutt/temp/mutt* map! <F2> <ESC>gqqji
+   au BufRead ~/.mutt/temp/mutt* map! <F3> <ESC>kgqji
+augroup END

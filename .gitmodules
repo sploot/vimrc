@@ -82,3 +82,6 @@
 [submodule "vim/bundle/tabman"]
 	path = vim/bundle/tabman
 	url = git://github.com/kien/tabman.vim.git
+[submodule "vim/bundle/jellybeans"]
+	path = vim/bundle/jellybeans
+	url = git://github.com/nanotech/jellybeans.vim.git
